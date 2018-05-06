@@ -1,15 +1,21 @@
 import React,{Component }from 'react';
 import {connect} from 'react-redux';
+import {Sparklines,SparklinesLine} from 'react-sparkline';
 class WeatherList extends Component{
   renderWeather(cityData){
-    {
-      return(
-        <tr>
-         <td>{cityData.city.name}</td>
-        </tr>
-      )
-    }
+    const name=cityData.city.name
+    const temps=cityData.list.map(weather=>weather.main.temp)
 
+    return(
+      <tr key={name}>
+         <td>{name}</td>
+         <td>
+          <Sparklines height={120} width={180} data={temps}>
+            <SparklinesLine color="red"/>
+          </Sparklines>
+         </td>
+      </tr>
+    );
   }
   render(){
     return(
@@ -29,8 +35,8 @@ class WeatherList extends Component{
     );
   }
 }
-function mapStateToProps(weather){
+function mapStateToProps(state){
 
-  return {weather};//state.weather};
+  return {weather:state.weather};
 }
 export default connect(mapStateToProps)(WeatherList);
